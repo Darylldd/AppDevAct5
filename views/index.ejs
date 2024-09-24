@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Spotify</h1>
+    </header>
+
+    <main>
+        <section class="upload-section">
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="mp3file" accept="audio/mp3">
+                <button type="submit">Upload MP3</button>
+            </form>
+        </section>
+
+        <section class="songs-section">
+            <h2>Available Songs</h2>
+            <ul>
+                <% if (songs.length > 0) { %>
+                    <% songs.forEach(song => { %>
+                        <li>
+                            <p><%= song %></p>
+                            <audio controls>
+                                <source src="/uploads/<%= song %>" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <!-- Delete Form -->
+                            <form action="/delete" method="POST" style="display:inline;">
+                                <input type="hidden" name="song" value="<%= song %>">
+                                <button type="submit" class="delete-button">Delete</button>
+                            </form>
+                        </li>
+                    <% }); %>
+                <% } else { %>
+                    <p>No songs uploaded yet. Be the first to upload your tunes!</p>
+                <% } %>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
