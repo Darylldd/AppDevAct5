@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Songs</title>
+    <link rel="stylesheet" href="/css/styles.css"> 
+</head>
+<body>
+    <header>
+        <h1>Your Favorite Songs</h1>
+    </header>
+
+    <main>
+        <section class="songs-section">
+            <h2>Favorites</h2>
+            <ul>
+                <% if (songs.length > 0) { %>
+                    <% songs.forEach(song => { %>
+                        <li>
+                            <p>Song: <%= song.song_name %></p>
+                            <p>Artist: <%= song.artist_name %></p>
+                            <audio controls>
+                                <source src="<%= song.filepath %>" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <form action="/favorite" method="POST" style="display:inline;">
+                                <input type="hidden" name="song_id" value="<%= song.id %>">
+                                <input type="hidden" name="is_favorite" value="false">
+                                <button type="submit">★ Unfavorite</button>
+                            </form>
+                        </li>
+                    <% }); %>
+                <% } else { %>
+                    <p>No favorite songs yet.</p>
+                <% } %>
+            </ul>
+            <a href="/">Back to All Songs</a>
+        </section>
+    </main>
+</body>
+</html>

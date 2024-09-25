@@ -14,7 +14,12 @@
     <main>
         <section class="upload-section">
             <form action="/upload" method="POST" enctype="multipart/form-data">
-                <input type="file" name="mp3file" accept="audio/mp3">
+                <input type="text" name="songName" placeholder="Enter Song Name" required>
+
+                <input type="text" name="artistName" placeholder="Enter Artist Name" required>
+
+                <input type="file" name="mp3file" accept="audio/mp3" required>
+                
                 <button type="submit">Upload MP3</button>
             </form>
         </section>
@@ -25,14 +30,23 @@
                 <% if (songs.length > 0) { %>
                     <% songs.forEach(song => { %>
                         <li>
-                            <p><%= song %></p>
+                            <p>Song: <%= song.song_name %></p>
+                            <p>Artist: <%= song.artist_name %></p>
                             <audio controls>
-                                <source src="/uploads/<%= song %>" type="audio/mpeg">
+                                <source src="<%= song.filepath %>" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
+                            <!-- Favorite Form -->
+                            <form action="/favorite" method="POST" style="display:inline;">
+                                <input type="hidden" name="song_id" value="<%= song.id %>">
+                                <input type="hidden" name="is_favorite" value="<%= !song.is_favorite %>">
+                                <button type="submit">
+                                    <% if (song.is_favorite) { %> ★ Unfavorite <% } else { %> ☆ Favorite <% } %>
+                                </button>
+                            </form>
                             <!-- Delete Form -->
                             <form action="/delete" method="POST" style="display:inline;">
-                                <input type="hidden" name="song" value="<%= song %>">
+                                <input type="hidden" name="song_id" value="<%= song.id %>">
                                 <button type="submit" class="delete-button">Delete</button>
                             </form>
                         </li>
@@ -41,6 +55,9 @@
                     <p>No songs uploaded yet. Be the first to upload your tunes!</p>
                 <% } %>
             </ul>
+            
+            <a href="/favorites">View Favorite Songs</a>
+            
         </section>
     </main>
 </body>
